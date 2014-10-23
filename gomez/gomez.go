@@ -1,6 +1,7 @@
 package gomez
 
 import (
+	"errors"
 	"image"
 	"image/color"
 	"image/gif"
@@ -146,6 +147,11 @@ func New(filename string) (m Maze, err error) {
 		case m.blue:
 			m.end = Point{i % m.Stride, i / m.Stride}
 		}
+	}
+	if m.start == (Point{0, 0}) {
+		err = errors.New("maze is missing start pixel")
+	} else if m.end == (Point{0, 0}) {
+		err = errors.New("maze is missing end pixel")
 	}
 
 	return

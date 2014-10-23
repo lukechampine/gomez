@@ -10,7 +10,7 @@ import (
 func main() {
 	m, err := gomez.New("maze.gif")
 	if err != nil {
-		fmt.Println(err)
+		fmt.Println("Could not load maze:", err)
 		return
 	}
 	t := time.Now()
