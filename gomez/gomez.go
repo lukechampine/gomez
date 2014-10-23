@@ -62,6 +62,27 @@ func (m *Maze) recSolve(p Point) bool {
 	return false
 }
 
+// search for dead ends, then follow them back to their first branching point.
+// this is less efficient than recSolve, but arguably more fun to watch.
+func (m *Maze) deadEndSolve() bool {
+	for i := range m.Pix {
+		p := Point{i % m.Stride, i / m.Stride}
+		if m.atPoint(p) == m.white {
+			for len(m.options(p)) == 1 && !m.atStart(p) && !m.atEnd(p) {
+				m.setPoint(p, m.mint)
+				p = m.options(p)[0]
+			}
+		}
+	}
+	// the remaining path is the solution
+	for i := range m.Pix {
+		if m.Pix[i] == m.white {
+			m.Pix[i] = m.red
+		}
+	}
+	return true
+}
+
 // brute-force the maze, changing colors at each branch
 func (m *Maze) ColorRoutes() {
 	m.recColorRoute(m.options(m.start)[0], []uint8{m.pink, m.mint, m.teal})
@@ -93,6 +114,21 @@ func (m *Maze) options(p Point) (ps []Point) {
 	return
 }
 
+// return true if we are adjacent to the start point
+func (m *Maze) atStart(p Point) bool {
+	adj := []Point{
+		{p.X + 0, p.Y - 1},
+		{p.X - 1, p.Y + 0}, {p.X + 1, p.Y + 0},
+		{p.X + 0, p.Y + 1},
+	}
+	for _, a := range adj {
+		if m.atPoint(a) == m.green {
+			return true
+		}
+	}
+	return false
+}
+
 // return true if we are adjacent to the end point
 func (m *Maze) atEnd(p Point) bool {
 	adj := []Point{
@@ -101,7 +137,7 @@ func (m *Maze) atEnd(p Point) bool {
 		{p.X + 0, p.Y + 1},
 	}
 	for _, a := range adj {
-		if a.X >= 0 && a.Y >= 0 && m.atPoint(a) == m.blue {
+		if m.atPoint(a) == m.blue {
 			return true
 		}
 	}
