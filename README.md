@@ -10,6 +10,6 @@ gomez will output a solution that looks like this:
 
 ![Solved maze](maze-solved.gif)
 
-The light green pixels highlight all of the paths that were explored by the algorithm, while the red shows the correct path.
+The light green pixels highlight all of the paths that were explored by the algorithm, while the red shows the correct path. Note that these images are ENLARGED TO SHOW TEXTURE. gomez can still solve them, but the red path may look a little funky.
 
-The maze solving algorithm is recursive, and fairly naive. However, it has proved capable of solving even massive (5000x5000) mazes in a reasonable amount of time (under 2 seconds on my i7).
+The maze solving algorithm is recursive, and fairly naive. However, it has proved capable of solving even massive (5000x5000) mazes in a reasonable amount of time -- under 2 seconds on my i7. You can try one for yourself [here](http://i.imgur.com/477s1xd.gif).
